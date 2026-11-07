@@ -1,0 +1,54 @@
+name: Refresh route data & deploy to GitHub Pages
+
+# 三種時機都會重新抓取路線資料並部署：
+#   push             → 改程式碼時順便更新
+#   schedule         → 每天兩次自動更新（UTC 22:00 / 10:00 = HKT 06:00 / 18:00）
+#   workflow_dispatch → 在 Actions 頁手動按「Run workflow」
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 22 * * *'   # 06:00 HKT
+    - cron: '0 10 * * *'   # 18:00 HKT
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 產出 data/routeFareList.min.json 與 data/versions.json。
+      # 全部來源失敗也不會讓部署失敗：前端會自動改用第三方來源或政府 API 精簡模式。
+      - name: Build route / stop index
+        run: python3 scripts/build_data.py
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
