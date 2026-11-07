@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e8483f">
+<meta name="description" content="香港巴士及專線小巴即時到站預報，免費、無廣告。資料來自運輸署及各營辦商開放 API。">
+<title>香港巴士到站預報 · HK Bus ETA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚌</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🚌</span>
+      <div class="brand-text">
+        <h1 data-i18n="title">香港巴士到站預報</h1>
+        <p id="statusLine" class="status">載入中…</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="langBtn" class="icon-btn" aria-label="Language">EN</button>
+      <button id="themeBtn" class="icon-btn" aria-label="Theme">🌙</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button data-mode="bus" class="active">🚌 巴士</button>
+    <button data-mode="gmb">🚐 小巴</button>
+  </nav>
+
+  <div class="search-wrap">
+    <div class="searchbox">
+      <span class="search-ico">🔍</span>
+      <input id="searchInput" type="search" placeholder="搜尋路線號／地點／站名…" autocomplete="off" spellcheck="false" enterkeyhint="search">
+      <button id="clearSearch" class="clear-btn" aria-label="Clear">✕</button>
+    </div>
+  </div>
+
+  <div class="quick">
+    <button id="nearbyBtn" class="quick-btn">📍 附近車站</button>
+    <button id="favBtn" class="quick-btn">⭐ 收藏</button>
+    <button id="histBtn" class="quick-btn">🕘 瀏覽紀錄</button>
+  </div>
+
+  <main id="view"></main>
+  <footer id="footerText">資料來源：運輸署資料一站通及各營辦商開放 API</footer>
+</div>
+
+<div id="mapModal" class="map-modal hidden"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
