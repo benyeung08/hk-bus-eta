@@ -1,0 +1,10 @@
+# 由 scripts/build_data.py 於部署時產生，不進 git
+data/
+
+# Python
+__pycache__/
+*.pyc
+
+# 本機
+.DS_Store
+Thumbs.db
